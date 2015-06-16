@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>teamId</key>
+		<integer>28</integer>
+		<key>teamName</key>
+		<string>Atlanta</string>
+		<key>teamNickname</key>
+		<string>Dream</string>
+	</dict>
+	<dict>
+		<key>teamId</key>
+		<integer>27</integer>
+		<key>teamName</key>
+		<string>Chicago</string>
+		<key>teamNickname</key>
+		<string>Sky</string>
+	</dict>
+	<dict>
+		<key>teamId</key>
+		<integer>21</integer>
+		<key>teamName</key>
+		<string>Connecticut</string>
+		<key>teamNickname</key>
+		<string>Sun</string>
+	</dict>
+	<dict>
+		<key>teamId</key>
+		<integer>8</integer>
+		<key>teamName</key>
+		<string>Indiana</string>
+		<key>teamNickname</key>
+		<string>Fever</string>
+	</dict>
+	<dict>
+		<key>teamId</key>
+		<integer>12</integer>
+		<key>teamName</key>
+		<string>New York</string>
+		<key>teamNickname</key>
+		<string>Liberty</string>
+	</dict>
+	<dict>
+		<key>teamId</key>
+		<integer>20</integer>
+		<key>teamName</key>
+		<string>Washington</string>
+		<key>teamNickname</key>
+		<string>Mystics</string>
+	</dict>
+	<dict>
+		<key>teamId</key>
+		<integer>9</integer>
+		<key>teamName</key>
+		<string>Los Angeles</string>
+		<key>teamNickname</key>
+		<string>Sparks</string>
+	</dict>
+	<dict>
+		<key>teamId</key>
+		<integer>11</integer>
+		<key>teamName</key>
+		<string>Minnesota</string>
+		<key>teamNickname</key>
+		<string>Lynx</string>
+	</dict>
+	<dict>
+		<key>teamId</key>
+		<integer>14</integer>
+		<key>teamName</key>
+		<string>Phoenix</string>
+		<key>teamNickname</key>
+		<string>Mercury</string>
+	</dict>
+	<dict>
+		<key>teamId</key>
+		<integer>22</integer>
+		<key>teamName</key>
+		<string>San Antonio</string>
+		<key>teamNickname</key>
+		<string>Silver Stars</string>
+	</dict>
+	<dict>
+		<key>teamId</key>
+		<integer>17</integer>
+		<key>teamName</key>
+		<string>Seattle</string>
+		<key>teamNickname</key>
+		<string>Storm</string>
+	</dict>
+	<dict>
+		<key>teamId</key>
+		<integer>6</integer>
+		<key>teamName</key>
+		<string>Tulsa</string>
+		<key>teamNickname</key>
+		<string>Shock</string>
+	</dict>
+</array>
+</plist>

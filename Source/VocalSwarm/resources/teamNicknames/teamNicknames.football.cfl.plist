@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>teamId</key>
+		<integer>6</integer>
+		<key>teamName</key>
+		<string>Hamilton</string>
+		<key>teamNickname</key>
+		<string>Tiger-Cats</string>
+	</dict>
+	<dict>
+		<key>teamId</key>
+		<integer>9</integer>
+		<key>teamName</key>
+		<string>Montreal</string>
+		<key>teamNickname</key>
+		<string>Alouettes</string>
+	</dict>
+	<dict>
+		<key>teamId</key>
+		<integer>7</integer>
+		<key>teamName</key>
+		<string>Toronto</string>
+		<key>teamNickname</key>
+		<string>Argonauts</string>
+	</dict>
+	<dict>
+		<key>teamId</key>
+		<integer>5</integer>
+		<key>teamName</key>
+		<string>Winnipeg</string>
+		<key>teamNickname</key>
+		<string>Blue Bombers</string>
+	</dict>
+	<dict>
+		<key>teamId</key>
+		<integer>1</integer>
+		<key>teamName</key>
+		<string>British Columbia</string>
+		<key>teamNickname</key>
+		<string>Lions</string>
+	</dict>
+	<dict>
+		<key>teamId</key>
+		<integer>3</integer>
+		<key>teamName</key>
+		<string>Calgary</string>
+		<key>teamNickname</key>
+		<string>Stampeders</string>
+	</dict>
+	<dict>
+		<key>teamId</key>
+		<integer>2</integer>
+		<key>teamName</key>
+		<string>Edmonton</string>
+		<key>teamNickname</key>
+		<string>Eskimos</string>
+	</dict>
+	<dict>
+		<key>teamId</key>
+		<integer>4</integer>
+		<key>teamName</key>
+		<string>Saskatchewan</string>
+		<key>teamNickname</key>
+		<string>Roughriders</string>
+	</dict>
+</array>
+</plist>
