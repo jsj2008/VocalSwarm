@@ -70,43 +70,43 @@ typedef void (^VSUsersResultBlock)(NSArray *users);
 //}
 
 - (void) updateSwarmDataWithResult:(VSSwarmModelResultBlock) result {
-//    VSSwarmsModelDelegate *qbDelegate = [[VSSwarmsModelDelegate alloc] initWithCompletition:^(NSArray *swarms) {
-//        //use old games here
-//        NSArray *oldSwarmsData = [self.swarmsData copy];
-//        [self.swarmsData removeAllObjects];
-//        NSMutableArray *swarmsArray = [NSMutableArray array];
-//        if (swarms) {
-//            for (QBCOCustomObject *co in swarms) {
-//                VSSwarm *swarm = [[VSSwarm alloc] initWithCO:co];
-//                for (VSSwarm *oldSwarm in oldSwarmsData) {
-//                    if ([swarm matchId] == [oldSwarm matchId]) {
-//                        [swarm setGame:[oldSwarm game]];
-//                    }
-//                }
-//                if ([swarm game]) {
-//                    [self.swarmsData addObject:swarm];
-//                } else {
-//                    [swarmsArray addObject:swarm];
-//                }
-//            }
-//        }
-//        [self loadGames:swarmsArray result:^(NSArray *swarms) {
-//            //remove past swarms
-//            NSMutableArray *resultArray = [NSMutableArray array];
-//            for (VSSwarm *swarm in swarms) {
-//                if (![swarm.game isFinished]) {
-//                    [resultArray addObject:swarm];
-//                } else {
-//                    [self removeSwarm:swarm];
-//                }
-//            }
-//            result([NSArray arrayWithArray:resultArray]);
-//        }];
-//    }];
-//    
-//    [QBCustomObjects objectsWithClassName:CO_SWARM_CLASS_NAME
-//                          extendedRequest:[NSMutableDictionary dictionaryWithObjectsAndKeys:[VSSettingsModel currentUser].facebookID, @"_parent_id", nil]
-//                                 delegate:qbDelegate];
+    VSSwarmsModelDelegate *qbDelegate = [[VSSwarmsModelDelegate alloc] initWithCompletition:^(NSArray *swarms) {
+        //use old games here
+        NSArray *oldSwarmsData = [self.swarmsData copy];
+        [self.swarmsData removeAllObjects];
+        NSMutableArray *swarmsArray = [NSMutableArray array];
+        if (swarms) {
+            for (QBCOCustomObject *co in swarms) {
+                VSSwarm *swarm = [[VSSwarm alloc] initWithCO:co];
+                for (VSSwarm *oldSwarm in oldSwarmsData) {
+                    if ([swarm matchId] == [oldSwarm matchId]) {
+                        [swarm setGame:[oldSwarm game]];
+                    }
+                }
+                if ([swarm game]) {
+                    [self.swarmsData addObject:swarm];
+                } else {
+                    [swarmsArray addObject:swarm];
+                }
+            }
+        }
+        [self loadGames:swarmsArray result:^(NSArray *swarms) {
+            //remove past swarms
+            NSMutableArray *resultArray = [NSMutableArray array];
+            for (VSSwarm *swarm in swarms) {
+                if (![swarm.game isFinished]) {
+                    [resultArray addObject:swarm];
+                } else {
+                    [self removeSwarm:swarm];
+                }
+            }
+            result([NSArray arrayWithArray:resultArray]);
+        }];
+    }];
+    
+    [QBCustomObjects objectsWithClassName:CO_SWARM_CLASS_NAME
+                          extendedRequest:[NSMutableDictionary dictionaryWithObjectsAndKeys:[VSSettingsModel currentUser].facebookID, @"_parent_id", nil]
+                                 delegate:qbDelegate];
 }
 
 - (void) loadGames:(NSMutableArray*)swarms result:(VSSwarmModelResultBlock) result {

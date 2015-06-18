@@ -100,6 +100,7 @@
 }
 
 - (IBAction)facebookAction {
+    
     [self showLoading];
     
     [PFFacebookUtils logInWithPermissions:@[@"publish_actions"] block:^(PFUser *user, NSError *error)

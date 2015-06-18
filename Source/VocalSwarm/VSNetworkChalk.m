@@ -17,7 +17,6 @@
 
 #import "TBXML.h"
 #import "TBXML+HTTP.h"
-
 @interface VSNetworkChalk ()
 
 @property (strong, nonatomic) NSString *cacheDirectory;
@@ -44,6 +43,11 @@
 #define SCHEDULE_CACHE_UPDATE_TIME 3600 //1 hour minutes (1 * 60 * 60)
 #define SCOREBOARD_CACHE_FILENAME @"scoreboardCache.%@.%@.%@.%@.xml"
 #define SCOREBOARD_CACGE_UPDATE_TIME 300 //5 minures (5 * 60)
+#define SWARM_NBA_URL      @"http://www.vocalswarm.com/sportsswarm/nba.php"
+#define SWARM_MLB_URL      @"http://www.vocalswarm.com/sportsswarm/mlb.php"
+#define SWARM_MLS_URL      @"http://www.vocalswarm.com/sportsswarm/mls.php"
+#define SWARM_NFL_URL      @"http://www.vocalswarm.com/sportsswarm/nfl.php"
+#define SWARM_NHL_URL      @"http://www.vocalswarm.com/sportsswarm/nhl.php"
 
 @implementation VSNetworkChalk
 
@@ -323,6 +327,32 @@
 
 #pragma mark - schedule
 
+- (NSArray *) parseScheduleArray:(NSArray *)scheduleArray {
+    NSMutableArray *resultArray = [NSMutableArray array];
+    for(int i = 0; i < scheduleArray.count; i++) {
+        NSDictionary *dictionary = (NSDictionary *)[scheduleArray objectAtIndex:i];
+        VSGame *game = [[VSGame alloc] init];
+        game.gameId = [[dictionary objectForKey:@"id"] integerValue];
+        game.awayTeam = [[VSTeam alloc] init];
+        game.awayTeam.teamNickname = [dictionary objectForKey:@"ateam"];
+        game.homeTeam = [[VSTeam alloc] init];
+        game.homeTeam.teamNickname = [dictionary objectForKey:@"hteam"];
+        
+        NSString *dateString = [dictionary objectForKey:@"day"];
+        NSString *monthString = [dictionary objectForKey:@"month"];
+        NSString *yearString = [dictionary objectForKey:@"year"];
+        NSString *timeString = [dictionary objectForKey:@"time"];
+        NSDateFormatter *format = [[NSDateFormatter alloc] init];
+        [format setDateFormat:@"MM/dd/yyyy HH:mm a"];
+        [format setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+        [format setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
+        NSString *formatString = [NSString stringWithFormat:@"%@/%@/%@ %@", monthString, dateString, yearString, timeString];
+        game.gameDate = [format dateFromString:formatString];
+        [resultArray addObject:game];
+    }
+    return [NSArray arrayWithArray:resultArray];
+}
+
 - (NSArray *) parseScheduleXml:(TBXML *)tbxml
 {
     NSMutableArray *resultArray = [NSMutableArray array];
@@ -389,31 +419,44 @@
             //replace current day matches with extended info
             if ([month isEqualToString:[VSUtils currentMonth]]) {
                 //TODO change date to EST date
-                [self gamesForSportLeague:sportLeague gameDate:[NSDate date] result:^(NSArray *games) {
-                    NSMutableArray *finalArray = [NSMutableArray arrayWithArray:gamesArray];
-                    for (VSGame *inGame in games) {
-                        for (int i = 0; i < [gamesArray count]; i++) {
-                            VSGame *game = [gamesArray objectAtIndex:i];
-                            if ([inGame isEqual:game]) {
-                                [finalArray replaceObjectAtIndex:i withObject:inGame];
-                                break;
-                            }
-                        }
-                    }
-                    result (finalArray);
-                    isInProgress = NO;
-                }];
+                NSMutableArray *finalArray = [NSMutableArray arrayWithArray:gamesArray];
+//                for (VSGame *inGame in games) {
+//                    for (int i = 0; i < [gamesArray count]; i++) {
+//                        VSGame *game = [gamesArray objectAtIndex:i];
+//                        if ([inGame isEqual:game]) {
+//                            [finalArray replaceObjectAtIndex:i withObject:inGame];
+//                            break;
+//                        }
+//                    }
+//                }
+                result (finalArray);
+                isInProgress = NO;
+
+//                [self gamesForSportLeague:sportLeague gameDate:[NSDate date] result:^(NSArray *games) {
+//                    NSMutableArray *finalArray = [NSMutableArray arrayWithArray:gamesArray];
+//                    for (VSGame *inGame in games) {
+//                        for (int i = 0; i < [gamesArray count]; i++) {
+//                            VSGame *game = [gamesArray objectAtIndex:i];
+//                            if ([inGame isEqual:game]) {
+//                                [finalArray replaceObjectAtIndex:i withObject:inGame];
+//                                break;
+//                            }
+//                        }
+//                    }
+//                    result (finalArray);
+//                    isInProgress = NO;
+//                }];
             } else {
                 result(gamesArray);
                 isInProgress = NO;
             }
         }];
     } else {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self performSelector:@selector(scheduleRequestRetry:)
-                       withObject:@[sportLeague, month, result]
-                       afterDelay:1];
-        });
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [self performSelector:@selector(scheduleRequestRetry:)
+//                       withObject:@[sportLeague, month, result]
+//                       afterDelay:1];
+//        });
     }
 }
 
@@ -447,20 +490,35 @@
         
         if ([today isEqualToDate:otherDate]) {
             NSError* error = nil;
-            TBXML* tbxml = [TBXML newTBXMLWithXMLData:[NSData dataWithContentsOfFile:cachePath] error:&error];
-            result([self parseScheduleXml:tbxml]);
+            NSArray *jsonArray = (NSArray *)[NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:cachePath] options:kNilOptions error:&error];
+            result([self parseScheduleArray:jsonArray]);
+//            TBXML* tbxml = [TBXML newTBXMLWithXMLData:[NSData dataWithContentsOfFile:cachePath] error:&error];
+//            result([self parseScheduleXml:tbxml]);
             return;
         }
     }
     
-    NSString *urlString = [NSString stringWithFormat:CHALK_SCHEDULE_REQUEST_STRING, [sportLeague sportName], [sportLeague leagueAbbr], month];
-    
+//    NSString *urlString = [NSString stringWithFormat:CHALK_SCHEDULE_REQUEST_STRING, [sportLeague sportName], [sportLeague leagueAbbr], month];
+    NSString *urlString = SWARM_NBA_URL;
+    if ([sportLeague.sportName isEqualToString:@"football"]) {
+        urlString = SWARM_NFL_URL;
+    } else if ([sportLeague.sportName isEqualToString:@"baseball"]) {
+        urlString = SWARM_MLB_URL;
+    } else if ([sportLeague.sportName isEqualToString:@"basketball"]) {
+        urlString = SWARM_NBA_URL;
+    } else if ([sportLeague.sportName isEqualToString:@"hockey"]) {
+        urlString = SWARM_NHL_URL;
+    }
+
     [NSURLConnection tbxmlAsyncRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]
                                success:^(NSData *data, NSURLResponse *response) {
                                    [data writeToFile:cachePath atomically:YES];
                                    NSError* error = nil;
-                                   TBXML* tbxml = [TBXML newTBXMLWithXMLData:data error:&error];
-                                   result([self parseScheduleXml:tbxml]);
+                                   NSArray *jsonArray = (NSArray *)[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                                   result([self parseScheduleArray:jsonArray]);
+
+//                                   TBXML* tbxml = [TBXML newTBXMLWithXMLData:data error:&error];
+//                                   result([self parseScheduleXml:tbxml]);
                                }
                                failure:^(NSData *data, NSError *error) {
                                    result(nil);
@@ -522,7 +580,7 @@
                                  result:^(NSArray *gamesArray) {
                                      for (int i = 0; i < [gamesArray count]; ++i) {
                                          VSGame *game = [gamesArray objectAtIndex:i];
-                                         if ([game homeTeamId] == team.teamId || [game awayTeamId] == team.teamId) {
+                                         if ([[game homeTeam].teamNickname isEqualToString:team.teamNickname] || [[game awayTeam].teamNickname isEqualToString:team.teamNickname]) {
                                              NSLog(@"%@", [game gameDate]);
                                              NSLog(@"%@", [[NSDate alloc] init]);
                                              NSLog(@"%f", [[game gameDate] timeIntervalSinceNow]);
@@ -535,25 +593,28 @@
                                              }
                                          }
                                      }
+                                     if(resultArr.count > 0) {
+                                         result(resultArr);
+                                     }
                                      
 //                                     if ([resultArr count] < 4) {
-                                         [self scheduleRequestForSportLeague:team.sportLeague
-                                                                       month:[VSUtils nextMonth]
-                                                                      result:^(NSArray *gamesArray) {
-                                                                          for (int i = 0; i < [gamesArray count]; ++i) {
-                                                                              VSGame *game = [gamesArray objectAtIndex:i];
-                                                                              if ([game homeTeamId] == team.teamId || [game awayTeamId] == team.teamId) {
-                                                                                  [resultArr addObject:game];
-//                                                                                  if ([resultArr count] == 4) {
-//                                                                                      break;
-//                                                                                  }
-                                                                              }
-                                                                          }
-                                                                          
-                                                                          [self proccessTeamsForGames:resultArr
-                                                                                          sportLeague:[team sportLeague]
-                                                                                               result:result];
-                                                                      }];
+//                                         [self scheduleRequestForSportLeague:team.sportLeague
+//                                                                       month:[VSUtils nextMonth]
+//                                                                      result:^(NSArray *gamesArray) {
+//                                                                          for (int i = 0; i < [gamesArray count]; ++i) {
+//                                                                              VSGame *game = [gamesArray objectAtIndex:i];
+//                                                                              if ([[game homeTeam].teamNickname isEqualToString:team.teamNickname] || [[game awayTeam].teamNickname isEqualToString:team.teamNickname]) {
+//                                                                                  [resultArr addObject:game];
+////                                                                                  if ([resultArr count] == 4) {
+////                                                                                      break;
+////                                                                                  }
+//                                                                              }
+//                                                                          }
+//                                                                          
+//                                                                          [self proccessTeamsForGames:resultArr
+//                                                                                          sportLeague:[team sportLeague]
+//                                                                                               result:result];
+//                                                                      }];
 //                                     } else {
 //                                         [self proccessScoreRequestArray:resultArr team:team result:result];
 //                                     }

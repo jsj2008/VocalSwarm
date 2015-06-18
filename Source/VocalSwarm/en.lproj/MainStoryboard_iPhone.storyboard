@@ -2389,6 +2389,20 @@ please choose a type below to begin:</string>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="P7y-zd-Djd">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                                 <color key="backgroundColor" white="0.1313583485" alpha="1" colorSpace="calibratedWhite"/>
+                                <view key="tableFooterView" contentMode="scaleToFill" id="Wxm-aU-3Sg">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="qC5-SZ-ufF">
+                                            <rect key="frame" x="142" y="241" width="37" height="37"/>
+                                        </activityIndicatorView>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.25" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstAttribute="centerY" secondItem="qC5-SZ-ufF" secondAttribute="centerY" id="3YV-j0-CSc"/>
+                                        <constraint firstAttribute="centerX" secondItem="qC5-SZ-ufF" secondAttribute="centerX" id="DpG-C9-Ast"/>
+                                    </constraints>
+                                </view>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="homeCustomEventCellIdentifier" rowHeight="182" id="BL5-OL-HPH">
                                         <rect key="frame" x="0.0" y="22" width="320" height="182"/>
@@ -2568,30 +2582,13 @@ please choose a type below to begin:</string>
                                     <outlet property="delegate" destination="daH-oK-pwL" id="ueX-8n-jV6"/>
                                 </connections>
                             </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wxm-aU-3Sg">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
-                                <subviews>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="qC5-SZ-ufF">
-                                        <rect key="frame" x="142" y="241" width="37" height="37"/>
-                                    </activityIndicatorView>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.25" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="centerY" secondItem="qC5-SZ-ufF" secondAttribute="centerY" id="3YV-j0-CSc"/>
-                                    <constraint firstAttribute="centerX" secondItem="qC5-SZ-ufF" secondAttribute="centerX" id="DpG-C9-Ast"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="P7y-zd-Djd" firstAttribute="trailing" secondItem="F7B-0a-IaZ" secondAttribute="trailing" id="J6i-C8-iPj"/>
-                            <constraint firstItem="Wxm-aU-3Sg" firstAttribute="trailing" secondItem="F7B-0a-IaZ" secondAttribute="trailing" id="PDN-JN-Q0Y"/>
-                            <constraint firstItem="Wxm-aU-3Sg" firstAttribute="leading" secondItem="F7B-0a-IaZ" secondAttribute="leading" id="ej6-gF-dO4"/>
                             <constraint firstItem="P7y-zd-Djd" firstAttribute="leading" secondItem="F7B-0a-IaZ" secondAttribute="leading" id="mI5-nK-eQS"/>
                             <constraint firstItem="P7y-zd-Djd" firstAttribute="bottom" secondItem="F7B-0a-IaZ" secondAttribute="bottom" id="mUJ-wU-Wkv"/>
                             <constraint firstItem="P7y-zd-Djd" firstAttribute="top" secondItem="F7B-0a-IaZ" secondAttribute="top" id="pCG-8H-o7f"/>
-                            <constraint firstItem="Wxm-aU-3Sg" firstAttribute="bottom" secondItem="F7B-0a-IaZ" secondAttribute="bottom" id="q60-91-J4t"/>
-                            <constraint firstItem="Wxm-aU-3Sg" firstAttribute="top" secondItem="F7B-0a-IaZ" secondAttribute="top" id="xCj-5V-dkF"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="VD4-ui-TzO"/>
@@ -2941,9 +2938,9 @@ please choose a type below to begin:</string>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="5WZ-rN-jbX"/>
+        <segue reference="vzn-KJ-STm"/>
         <segue reference="Lzx-wc-wRc"/>
-        <segue reference="7ud-AV-NkC"/>
         <segue reference="3MI-Dw-MdF"/>
+        <segue reference="7ud-AV-NkC"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -14,6 +14,9 @@
 #import "config.h"
 #import "UserParseHelper.h"
 #import <ooVooSDK-iOS/ooVooSDK-iOS.h>
+#import "AFNetworking.h"
+#import "VSNetworkChalk.h"
+#import "TBXML+HTTP.h"
 @interface VSAppDelegate() <FlurryAdDelegate>
 {
     UserParseHelper *userStart;
@@ -23,7 +26,7 @@
 
 @end
 
-@implementation VSAppDelegate 
+@implementation VSAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -110,7 +113,21 @@
 //            });
 //        }
     });
-
+    
+//    NSString *urlString = SWARM_NBA_URL;
+//    [NSURLConnection tbxmlAsyncRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]
+//                               success:^(NSData *data, NSURLResponse *response) {
+//                                   NSArray *jsonArray = (NSArray *)[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+//                                   for(int i = 0; i < jsonArray.count; i++) {
+//                                       NSDictionary *json = (NSDictionary *)[jsonArray objectAtIndex:i];
+//                                       int gameId = [[json objectForKey:@"id"] integerValue];
+//                                       NSString *teamName = [json objectForKey:@"ateam"];
+//                                       NSLog(@"data : %@", json);
+//                                   }
+//                               }
+//                               failure:^(NSData *data, NSError *error) {
+//                                   NSLog(@"error : %@", error);
+//                               }];
 
     return YES;
 }
