@@ -100,25 +100,26 @@
 
 - (BOOL)ifNeedUpdate
 {
-    NSMutableArray *oldTeams = [NSMutableArray arrayWithArray:self.favoriteTeams];
-    for (VSTeam *team in [VSSettingsModel getFavoriteTeams]) {
-        BOOL isNew = YES;
-        for (int i = 0; i < [oldTeams count]; i++) {
-            VSTeam *oldTeam = [oldTeams objectAtIndex:i];
-            if ([oldTeam isEqual:team]) {
-                isNew = NO;
-                [oldTeams removeObjectAtIndex:i];
-                break;
-            }
-        }
-        
-        if (isNew) {
-            return YES;
-        }
-    }
+    NSMutableArray *oldTeams = (NSMutableArray *)[[PFUser currentUser] objectForKey:PARSE_FAVORITE_TEAMS];
+//    for (VSTeam *team in [VSSettingsModel getFavoriteTeams]) {
+//        BOOL isNew = YES;
+//        for (int i = 0; i < [oldTeams count]; i++) {
+//            VSTeam *oldTeam = [oldTeams objectAtIndex:i];
+//            if ([oldTeam isEqual:team]) {
+//                isNew = NO;
+//                [oldTeams removeObjectAtIndex:i];
+//                break;
+//            }
+//        }
+//        
+//        if (isNew) {
+//            return YES;
+//        }
+//    }
     
     return ([oldTeams count] > 0);
 }
+
 
 - (void)updateHeadline
 {
@@ -137,29 +138,31 @@
         [team setTeamNickname:[teamArray objectAtIndex:4]];
         [self.favoriteTeams addObject:team];
     }
+    [self doneLoadingTableViewData:YES];
 
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [[VSNetworkChalk sharedInstance] headlinesForTeams:self.favoriteTeams result:^{
-            [self.data removeAllObjects];
-            for (VSTeam *team in self.favoriteTeams) {
-                //remove headlines older than 2 week
-                NSMutableArray *last2weekHeadlines = [NSMutableArray array];
-                for (VSHeadline *headline in [team headlines]) {
-                    NSTimeInterval ti = [[headline gameDate] timeIntervalSinceNow];
-                    if (ti > -1209600) {
-                        [last2weekHeadlines addObject:headline];
-                    }
-                }
-                [team setHeadlines:last2weekHeadlines];
-                
-                [self.data addObjectsFromArray:[team headlines]];
-            }
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self doneLoadingTableViewData:YES];
-            });
-        }];
-    });
+
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+//        [[VSNetworkChalk sharedInstance] headlinesForTeams:self.favoriteTeams result:^{
+//            [self.data removeAllObjects];
+//            for (VSTeam *team in self.favoriteTeams) {
+//                //remove headlines older than 2 week
+//                NSMutableArray *last2weekHeadlines = [NSMutableArray array];
+//                for (VSHeadline *headline in [team headlines]) {
+//                    NSTimeInterval ti = [[headline gameDate] timeIntervalSinceNow];
+//                    if (ti > -1209600) {
+//                        [last2weekHeadlines addObject:headline];
+//                    }
+//                }
+//                [team setHeadlines:last2weekHeadlines];
+//                
+//                [self.data addObjectsFromArray:[team headlines]];
+//            }
+//            
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [self doneLoadingTableViewData:YES];
+//            });
+//        }];
+//    });
 }
 
 - (void)doneLoadingTableViewData:(BOOL) withReload
@@ -176,7 +179,7 @@
     [self.activityIndicator setHidden:YES];
     [self.tableView setHidden:NO];
     
-    if ([self.data count] == 0) {
+    if ([self.favoriteTeams count] == 0) {
         [self.emptyLabel setHidden:NO];
     } else {
         [self.emptyLabel setHidden:YES];
@@ -270,7 +273,7 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.data count];
+    return [self.favoriteTeams count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -289,25 +292,25 @@
         [(UIButton*)showButton setTag:[indexPath row]];
     }
     
-    VSHeadline *headline = [self.data objectAtIndex:[indexPath row]];
+    VSTeam *headline = [self.favoriteTeams objectAtIndex:[indexPath row]];
     
     UIView* mainTitle = [cell viewWithTag:13002];
     if ([mainTitle isKindOfClass:[UILabel class]]) {
-        [(UILabel *)mainTitle setText:[NSString stringWithFormat:@"%@ %@", [[headline team] teamName], [[headline team] teamNickname]]];
+        [(UILabel *)mainTitle setText:[NSString stringWithFormat:@"%@ %@", headline.teamName, headline.teamNickname]];
         //[(UILabel *)mainTitle setText:[[self.data objectAtIndex:[indexPath row]] objectForKey:@"mainTitle"]];
     }
     
-    UIView* subTitle = [cell viewWithTag:13003];
-    if ([subTitle isKindOfClass:[UILabel class]]) {
-        [(UILabel *)subTitle setText:[headline headlineHeader]];
-//        [(UILabel *)subTitle setText:[[self.data objectAtIndex:[indexPath row]] objectForKey:@"title"]];
-    }
-    
-    UIView* descriptionTitle = [cell viewWithTag:13004];
-    if ([descriptionTitle isKindOfClass:[UILabel class]]) {
-        [(UILabel *)descriptionTitle setText:[headline body]];
-//        [(UILabel *)descriptionTitle setText:[[self.data objectAtIndex:[indexPath row]] objectForKey:@"description"]];
-    }
+//    UIView* subTitle = [cell viewWithTag:13003];
+//    if ([subTitle isKindOfClass:[UILabel class]]) {
+//        [(UILabel *)subTitle setText:[headline headlineHeader]];
+////        [(UILabel *)subTitle setText:[[self.data objectAtIndex:[indexPath row]] objectForKey:@"title"]];
+//    }
+//    
+//    UIView* descriptionTitle = [cell viewWithTag:13004];
+//    if ([descriptionTitle isKindOfClass:[UILabel class]]) {
+//        [(UILabel *)descriptionTitle setText:[headline body]];
+////        [(UILabel *)descriptionTitle setText:[[self.data objectAtIndex:[indexPath row]] objectForKey:@"description"]];
+//    }
     
     return cell;
 }
@@ -332,29 +335,29 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    VSHeadline *headline = [self.data objectAtIndex:[indexPath row]];
-    NSString* link = [[headline team] teamNewspaperLink];
-    
-    NSURL *url = [NSURL URLWithString:link];
-    
-    if ([self tabBarController] && [[self tabBarController] respondsToSelector:@selector(fullScreenWebView:)]) {
-        [[self tabBarController] performSelector:@selector(fullScreenWebView:)
-                                      withObject:url];
-        return;
-    }
-    
-    if (self.parentViewController && [self.parentViewController respondsToSelector:@selector(fullScreenWebView:)]) {
-        [self.parentViewController performSelector:@selector(fullScreenWebView:)
-                                        withObject:url];
-        return;
-    }
-    
-    if (self.parentViewController && [self.parentViewController respondsToSelector:@selector(showUrl:)]) {
-        [self.parentViewController performSelector:@selector(showUrl:)
-                                        withObject:url];
-    } else {
-        [self showUrl:url];
-    }
+//    VSHeadline *headline = [self.data objectAtIndex:[indexPath row]];
+//    NSString* link = [[headline team] teamNewspaperLink];
+//    
+//    NSURL *url = [NSURL URLWithString:link];
+//    
+//    if ([self tabBarController] && [[self tabBarController] respondsToSelector:@selector(fullScreenWebView:)]) {
+//        [[self tabBarController] performSelector:@selector(fullScreenWebView:)
+//                                      withObject:url];
+//        return;
+//    }
+//    
+//    if (self.parentViewController && [self.parentViewController respondsToSelector:@selector(fullScreenWebView:)]) {
+//        [self.parentViewController performSelector:@selector(fullScreenWebView:)
+//                                        withObject:url];
+//        return;
+//    }
+//    
+//    if (self.parentViewController && [self.parentViewController respondsToSelector:@selector(showUrl:)]) {
+//        [self.parentViewController performSelector:@selector(showUrl:)
+//                                        withObject:url];
+//    } else {
+//        [self showUrl:url];
+//    }
 }
 
 #pragma mark - WebView

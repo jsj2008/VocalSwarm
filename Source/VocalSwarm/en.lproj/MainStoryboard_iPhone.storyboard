@@ -1184,14 +1184,14 @@ please choose a type below to begin:</string>
                         <viewControllerLayoutGuide type="bottom" id="fSg-FU-nkv"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="gb7-p7-mki">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="xe3-Uk-4aj">
-                                <rect key="frame" x="142" y="241" width="37" height="37"/>
+                                <rect key="frame" x="142" y="266" width="37" height="37"/>
                             </activityIndicatorView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Glg-ie-zLc">
-                                <rect key="frame" x="-1" y="0.0" width="320" height="469"/>
+                                <rect key="frame" x="-1" y="0.0" width="320" height="518"/>
                                 <color key="backgroundColor" white="0.1313583485" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="320" id="yQa-M8-qSl"/>
@@ -1281,7 +1281,7 @@ please choose a type below to begin:</string>
                                 </connections>
                             </tableView>
                             <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="You don't have favorite sports or teams" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HWc-dJ-wbH">
-                                <rect key="frame" x="0.0" y="249" width="321" height="21"/>
+                                <rect key="frame" x="0.0" y="274" width="321" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="dWD-wP-zTe"/>
                                 </constraints>
@@ -1290,17 +1290,17 @@ please choose a type below to begin:</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Oiw-yd-jjk">
-                                <rect key="frame" x="0.0" y="479" width="320" height="40"/>
+                                <rect key="frame" x="0.0" y="528" width="320" height="40"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="L8Y-gi-AA9"/>
                                 </constraints>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ug3-7s-0Oj">
-                                <rect key="frame" x="0.0" y="0.0" width="321" height="519"/>
+                                <rect key="frame" x="0.0" y="0.0" width="321" height="568"/>
                                 <subviews>
                                     <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AIw-97-ei0">
-                                        <rect key="frame" x="0.0" y="0.0" width="321" height="519"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="321" height="568"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <outlet property="delegate" destination="SqK-qs-nKO" id="B8F-tk-yHc"/>
@@ -1325,7 +1325,7 @@ please choose a type below to begin:</string>
                                         </connections>
                                     </button>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="zJk-0x-Jcl">
-                                        <rect key="frame" x="142" y="241" width="37" height="37"/>
+                                        <rect key="frame" x="142" y="266" width="37" height="37"/>
                                     </activityIndicatorView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.25" colorSpace="calibratedWhite"/>
@@ -1761,22 +1761,6 @@ please choose a type below to begin:</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GeL-LI-0t9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1997" y="907"/>
-        </scene>
-        <!--Headlines-->
-        <scene sceneID="Zpe-rL-1Rg">
-            <objects>
-                <navigationController definesPresentationContext="YES" navigationBarHidden="YES" id="6fa-me-nvN" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Headlines" image="mainTabHeadline.png" id="WQr-Ev-LMj"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="8gT-27-kZH">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="SqK-qs-nKO" kind="relationship" relationship="rootViewController" id="9kv-8k-i5I"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Cgk-Am-N8f" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="797" y="229"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="sRe-di-YOM">
@@ -2650,7 +2634,6 @@ please choose a type below to begin:</string>
                     </tabBar>
                     <connections>
                         <segue destination="SO7-HC-eSR" kind="relationship" relationship="viewControllers" id="Zkw-pB-9O2"/>
-                        <segue destination="6fa-me-nvN" kind="relationship" relationship="viewControllers" id="ftu-UC-vwx"/>
                         <segue destination="VUz-6K-KdE" kind="relationship" relationship="viewControllers" id="bfQ-b7-n65"/>
                         <segue destination="PKD-7v-8s2" kind="push" identifier="FullScreenWebView" id="Q4P-EB-d2K"/>
                     </connections>
@@ -2904,7 +2887,6 @@ please choose a type below to begin:</string>
         <image name="leftArrow.png" width="29" height="29"/>
         <image name="loginLogo.png" width="245" height="262"/>
         <image name="logoutImage.png" width="30" height="34"/>
-        <image name="mainTabHeadline.png" width="33" height="28"/>
         <image name="mainTabHome.png" width="38" height="27"/>
         <image name="mainTabScores.png" width="26" height="27"/>
         <image name="mainTabSwarm.png" width="30" height="29"/>
@@ -2940,7 +2922,7 @@ please choose a type below to begin:</string>
     <inferredMetricsTieBreakers>
         <segue reference="vzn-KJ-STm"/>
         <segue reference="Lzx-wc-wRc"/>
-        <segue reference="3MI-Dw-MdF"/>
-        <segue reference="7ud-AV-NkC"/>
+        <segue reference="c0s-Ua-sP0"/>
+        <segue reference="ZaR-Hg-FtQ"/>
     </inferredMetricsTieBreakers>
 </document>

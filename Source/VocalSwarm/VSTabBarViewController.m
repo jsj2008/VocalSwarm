@@ -146,6 +146,7 @@
     
     UINavigationController* controller = (UINavigationController*)[self selectedViewController];
     [controller popToRootViewControllerAnimated:YES];
+    [controller tabBarController].selectedIndex = 1;
 }
 
 - (void)scheduledSwarmsAction {
@@ -154,7 +155,7 @@
     UINavigationController* controller = (UINavigationController*)[self selectedViewController];
     if (![[controller topViewController] isKindOfClass:[VSScheduledSwarmsViewController class]]) {
         [controller popToRootViewControllerAnimated:NO];
-        [[controller topViewController] performSegueWithIdentifier:@"testSegue" sender:self];
+        [controller tabBarController].selectedIndex = 1;
     }
 }
 

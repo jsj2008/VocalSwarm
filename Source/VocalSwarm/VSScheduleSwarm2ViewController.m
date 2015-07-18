@@ -12,10 +12,12 @@
 #import "VSNetworkChalk.h"
 #import "VSTeam.h"
 #import "VSScheduleSwarm3ViewController.h"
+#import <Parse/Parse.h>
+#import "config.h"
 
 @interface VSScheduleSwarm2ViewController () <UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, strong)  NSArray *data;
+@property (nonatomic, strong)  NSMutableArray *data;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 //@property (weak, nonatomic) IBOutlet UIView *titleView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
@@ -34,7 +36,7 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
         _dataSourceName = nil;
-        _data = [NSArray array];
+        _data = [NSMutableArray array];
     }
     return self;
 }
@@ -69,10 +71,22 @@
 }
 
 - (void) updateData {
-    self.data = [NSArray array];
+    self.data = [NSMutableArray array];
+
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         if ([self ifFavoriteTeams]) {
-            self.data = [NSArray arrayWithArray:[VSSettingsModel getFavoriteTeams]];
+            NSMutableArray *dataFavoriteTeamArray = (NSMutableArray *)[[PFUser currentUser] objectForKey:PARSE_FAVORITE_TEAMS];
+            for(int i = 0; i < dataFavoriteTeamArray.count; i++) {
+                NSArray *teamArray = (NSArray *)[dataFavoriteTeamArray objectAtIndex:i];
+                VSSportLeague *sportLeague = [[VSSportLeague alloc] initWithSport:[teamArray objectAtIndex:0] league:[teamArray objectAtIndex:1]];
+                VSTeam *team = [[VSTeam alloc] initWithSportLeague:sportLeague];
+                [team setTeamId:[[teamArray objectAtIndex:2] integerValue]];
+                [team setTeamName:[teamArray objectAtIndex:3]];
+                [team setTeamNickname:[teamArray objectAtIndex:4]];
+                [self.data addObject:team];
+            }
+
+//            self.data = [NSArray arrayWithArray:[VSSettingsModel getFavoriteTeams]];
 //            [self.data addObjectsFromArray:[VSSettingsModel getFavoriteTeams]];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableView reloadData];
@@ -84,7 +98,7 @@
             NSMutableArray *leagueForLoad = [NSMutableArray arrayWithArray:[networkInstance leaguesForSport:[VSNetworkChalk sport:self.dataSourceName]]];
             
             [self loadLeaguesData:leagueForLoad resultArray:[NSMutableArray array] result:^(NSMutableArray *result) {
-                self.data = [NSArray arrayWithArray:result];
+                self.data = [NSMutableArray arrayWithArray:result];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.tableView reloadData];
                     [self finishUpdate];
@@ -189,7 +203,7 @@ static NSString *scheduleTeamCellIdentifier = @"scheduleTeamCellIdentifier";
     if ([titleLabel isKindOfClass:[UILabel class]]) {
         VSTeam *team = nil;
         if ([self ifFavoriteTeams]) {
-            team = [self.data objectAtIndex:[indexPath row]];
+            team = (VSTeam *)[self.data objectAtIndex:[indexPath row]];
         } else {
             team = [[[self.data  objectAtIndex:[indexPath section]] objectForKey:@"teams"] objectAtIndex:[indexPath row]];
         }
@@ -212,7 +226,6 @@ static NSString *scheduleTeamCellIdentifier = @"scheduleTeamCellIdentifier";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
     [self performSegueWithIdentifier:selectVSSegueIdentifier
                               sender:[tableView cellForRowAtIndexPath:indexPath]];
 }
